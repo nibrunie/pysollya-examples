@@ -1,2 +1,3 @@
 matplotlib
 git+https://github.com/nibrunie/pysollya.git@v0.1.1
+flask
