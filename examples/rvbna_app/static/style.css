@@ -252,7 +252,7 @@ body {
     border-radius: var(--radius-md);
     padding: 1rem;
     margin-bottom: 0.75rem;
-    transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, opacity 0.25s ease;
 }
 
 .scheme-card:hover {
@@ -269,7 +269,69 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 0.5rem;
     margin-bottom: 0.4rem;
+}
+
+.scheme-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+
+.scheme-header-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+/* Type selector dropdown inside the card header */
+.scheme-type-select {
+    background: var(--surface-1);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.3rem 1.8rem 0.3rem 0.55rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%238b9ec1' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+    min-width: 0;
+    flex: 1;
+}
+
+.scheme-type-select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+/* Remove button */
+.remove-scheme-btn {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.remove-scheme-btn:hover {
+    background: rgba(248, 113, 113, 0.12);
+    border-color: rgba(248, 113, 113, 0.3);
+    color: var(--error);
 }
 
 .scheme-name {
@@ -284,6 +346,7 @@ body {
     letter-spacing: 0.06em;
     padding: 0.15rem 0.5rem;
     border-radius: 999px;
+    white-space: nowrap;
 }
 
 .badge-reference {
@@ -299,6 +362,10 @@ body {
     margin-bottom: 0.6rem;
 }
 
+.scheme-params-slot:empty {
+    display: none;
+}
+
 .scheme-options {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -309,6 +376,43 @@ body {
 
 .scheme-options .input-group {
     margin-bottom: 0;
+}
+
+/* Add Scheme button */
+.add-scheme-btn {
+    width: 100%;
+    padding: 0.65rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: transparent;
+    border: 1.5px dashed var(--border-medium);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    margin-bottom: 1rem;
+}
+
+.add-scheme-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+}
+
+/* Card entrance / exit animations */
+@keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlideOut {
+    from { opacity: 1; transform: translateY(0); max-height: 300px; margin-bottom: 0.75rem; }
+    to   { opacity: 0; transform: translateY(-8px); max-height: 0; margin-bottom: 0; padding: 0; overflow: hidden; }
 }
 
 .input-sm input,
@@ -366,9 +470,16 @@ body {
     box-shadow: 0 0 8px var(--accent-glow);
 }
 
+/* --- Button Row --- */
+.btn-row {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+}
+
 /* --- Primary Button --- */
 .primary-btn {
-    width: 100%;
+    flex: 1;
     padding: 0.85rem 1.2rem;
     background: linear-gradient(135deg, var(--accent) 0%, #7c5cf5 100%);
     color: white;
@@ -384,7 +495,6 @@ body {
     gap: 8px;
     transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
     box-shadow: 0 4px 18px rgba(91, 138, 245, 0.3);
-    margin-top: 0.5rem;
 }
 
 .primary-btn:hover {
@@ -403,6 +513,32 @@ body {
     box-shadow: none;
 }
 
+/* Share button */
+.share-btn {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    flex-shrink: 0;
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-md);
+    background: var(--surface-1);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.share-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(91, 138, 245, 0.2);
+}
+
+.share-btn:active {
+    transform: translateY(0);
+}
+
 .spinner {
     display: none;
     width: 18px;
@@ -414,6 +550,34 @@ body {
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* Toast notification */
+.toast {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    padding: 0.65rem 1.2rem;
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 0.82rem;
+    font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 100;
+    white-space: nowrap;
+}
+
+.toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
 
 /* --- Main Content --- */
 .main-content {

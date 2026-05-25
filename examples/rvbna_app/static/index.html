@@ -82,138 +82,29 @@
                             <h2>Dot Product Schemes</h2>
                         </div>
 
-                        <!-- Scheme cards -->
-                        <div class="scheme-card" id="card-exact">
-                            <div class="scheme-header">
-                                <label class="toggle-label">
-                                    <input type="checkbox" class="scheme-toggle" data-scheme="exact" checked>
-                                    <span class="toggle-track"><span class="toggle-thumb"></span></span>
-                                    <span class="scheme-name">Exact Dot Product</span>
-                                </label>
-                                <span class="scheme-badge badge-reference">REF</span>
-                            </div>
-                            <p class="scheme-desc">No intermediate rounding. Exact accumulation, single final round.</p>
-                        </div>
+                        <!-- Dynamic scheme cards container -->
+                        <div id="schemes-container"></div>
 
-                        <div class="scheme-card" id="card-approx-mult">
-                            <div class="scheme-header">
-                                <label class="toggle-label">
-                                    <input type="checkbox" class="scheme-toggle" data-scheme="approx_mult" checked>
-                                    <span class="toggle-track"><span class="toggle-thumb"></span></span>
-                                    <span class="scheme-name">FP MUL + Exact Acc</span>
-                                </label>
-                            </div>
-                            <p class="scheme-desc">Products rounded via FP MUL, then exactly accumulated.</p>
-                            <div class="scheme-options">
-                                <div class="input-group input-sm">
-                                    <label>Mult Prec</label>
-                                    <select data-param="multPrec" class="scheme-param">
-                                        <option value="fp16" selected>FP16</option>
-                                        <option value="fp32">FP32</option>
-                                        <option value="fp64">FP64</option>
-                                    </select>
-                                </div>
-                                <div class="input-group input-sm">
-                                    <label>Result Prec</label>
-                                    <select data-param="resPrec" class="scheme-param">
-                                        <option value="fp32" selected>FP32</option>
-                                        <option value="fp64">FP64</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="scheme-card" id="card-approx-mult-acc">
-                            <div class="scheme-header">
-                                <label class="toggle-label">
-                                    <input type="checkbox" class="scheme-toggle" data-scheme="approx_mult_acc" checked>
-                                    <span class="toggle-track"><span class="toggle-thumb"></span></span>
-                                    <span class="scheme-name">FP MUL + FP Add Tree</span>
-                                </label>
-                            </div>
-                            <p class="scheme-desc">Products rounded, then accumulated via binary tree of rounded additions.</p>
-                            <div class="scheme-options">
-                                <div class="input-group input-sm">
-                                    <label>Mult Prec</label>
-                                    <select data-param="multPrec" class="scheme-param">
-                                        <option value="fp16" selected>FP16</option>
-                                        <option value="fp32">FP32</option>
-                                        <option value="fp64">FP64</option>
-                                    </select>
-                                </div>
-                                <div class="input-group input-sm">
-                                    <label>Add Prec</label>
-                                    <select data-param="addPrec" class="scheme-param">
-                                        <option value="fp16" selected>FP16</option>
-                                        <option value="fp32">FP32</option>
-                                        <option value="fp64">FP64</option>
-                                    </select>
-                                </div>
-                                <div class="input-group input-sm">
-                                    <label>Result Prec</label>
-                                    <select data-param="resPrec" class="scheme-param">
-                                        <option value="fp32" selected>FP32</option>
-                                        <option value="fp64">FP64</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="scheme-card" id="card-fma">
-                            <div class="scheme-header">
-                                <label class="toggle-label">
-                                    <input type="checkbox" class="scheme-toggle" data-scheme="fma" checked>
-                                    <span class="toggle-track"><span class="toggle-thumb"></span></span>
-                                    <span class="scheme-name">Sequence of FMA</span>
-                                </label>
-                            </div>
-                            <p class="scheme-desc">Fused multiply-add: one rounding per step (res = round(res + a×b)).</p>
-                            <div class="scheme-options">
-                                <div class="input-group input-sm">
-                                    <label>FMA Prec</label>
-                                    <select data-param="fmaPrec" class="scheme-param">
-                                        <option value="fp32" selected>FP32</option>
-                                        <option value="fp64">FP64</option>
-                                    </select>
-                                </div>
-                                <div class="input-group input-sm">
-                                    <label>Result Prec</label>
-                                    <select data-param="resPrec" class="scheme-param">
-                                        <option value="fp32" selected>FP32</option>
-                                        <option value="fp64">FP64</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="scheme-card" id="card-bulk-norm">
-                            <div class="scheme-header">
-                                <label class="toggle-label">
-                                    <input type="checkbox" class="scheme-toggle" data-scheme="bulk_norm" checked>
-                                    <span class="toggle-track"><span class="toggle-thumb"></span></span>
-                                    <span class="scheme-name">Bulk Normalization</span>
-                                </label>
-                            </div>
-                            <p class="scheme-desc">Products rounded to fixed-point via round-to-odd, exponent from max product.</p>
-                            <div class="scheme-options">
-                                <div class="input-group input-sm">
-                                    <label>Bulk Prec (bits)</label>
-                                    <input type="number" data-param="bulkNormPrec" class="scheme-param" value="25" min="5" max="60">
-                                </div>
-                                <div class="input-group input-sm">
-                                    <label>Final Prec (bits)</label>
-                                    <input type="number" data-param="finalPrec" class="scheme-param" value="24" min="5" max="60">
-                                </div>
-                            </div>
-                        </div>
+                        <button type="button" class="add-scheme-btn" id="add-scheme-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            <span>Add Scheme</span>
+                        </button>
                     </section>
 
-                    <button type="submit" class="primary-btn" id="evaluate-btn">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                        <span id="btn-label">Evaluate</span>
-                        <div class="spinner" id="btn-spinner"></div>
-                    </button>
+                    <div class="btn-row">
+                        <button type="submit" class="primary-btn" id="evaluate-btn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            <span id="btn-label">Evaluate</span>
+                            <div class="spinner" id="btn-spinner"></div>
+                        </button>
+                        <button type="button" class="share-btn" id="share-btn" title="Copy shareable URL">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                        </button>
+                    </div>
                 </form>
+
+                <!-- Toast notification -->
+                <div class="toast" id="toast"></div>
             </aside>
 
             <!-- Main content area -->
